@@ -5,8 +5,6 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialIcons} from '@expo/vector-icons'
-import Car from './screens/Car';
-import Usuario from './screens/Usuario';
 import { useState } from 'react';
 // Crear constante para generar las rutas de los screens
 
@@ -112,6 +110,7 @@ function Rent({navigation}){
   const[platenumber ,setPlatenumber]= useState("");
   const[rentdate ,setRentdate]=useState('');
   const[errormess,setErrormess]=useState('');
+  
 
   const saveRent = () => {
     // Verificar que el usuario y número de placa existan en los arreglos respectivos
@@ -213,6 +212,190 @@ function Rent({navigation}){
       <Text style={{color:'red'}}>{errormess}</Text>
     </View>
 );
+}
+   function Car({ navigation, route }) {
+    const [numeroPlaca, setNumeroPlaca] = useState('');
+    const [marcaAuto, setMarcaAuto] = useState('');
+    const [estado, setEstado] = useState('');
+    const [errores, setErrores] = useState('');
+  
+    const validarPlaca = () => {
+      if (numeroPlaca.length < 6) {
+        setErrores('El número de placa debe tener al menos 6 caracteres');
+        return false;
+      }
+      return true;
+    };
+  
+    const validarMarca = () => {
+      if (marcaAuto === '') {
+        setErrores('La marca del auto no puede estar vacía');
+        return false;
+      }
+      return true;
+    };
+  
+    const validarEstado = () => {
+      if (estado === '') {
+        setErrores('El estado del auto no puede estar vacío');
+        return false;
+      }
+      if (estado !== 'disponible' && estado !== 'no disponible') {
+        setErrores('El estado del auto debe ser "disponible" o "no disponible"');
+        return false;
+      }
+      return true;
+    };
+  
+    const guardarAlquiler = () => {
+      setErrores('');
+      if (validarPlaca() && validarMarca() && validarEstado()) {
+        // guardar el alquiler en la base de datos
+        // ...
+        // redirigir a la pantalla de listar carros
+        navigation.navigate('ListarCarros');
+      }
+    };
+  
+    return (
+      <View style={styles.container}>
+        <Text style={{ marginBottom: 20 }}>Registro de alquiler</Text>
+        <TextInput
+          style={{ marginBottom: 10 }}
+          label="Número de placa"
+          mode="outlined"
+          left={<TextInput.Icon name="car" />}
+          onChangeText={setNumeroPlaca}
+          keyboardType="numeric"
+          value={numeroPlaca}
+        />
+        <TextInput
+          style={{ marginBottom: 10 }}
+          label="Marca del auto"
+          mode="outlined"
+          right={<TextInput.Icon name="car" />}
+          onChangeText={setMarcaAuto}
+          value={marcaAuto}
+        />
+        <TextInput
+          style={{ marginBottom: 10 }}
+          label="Estado del auto"
+          mode="outlined"
+          right={<TextInput.Icon name="car" />}
+          onChangeText={setEstado}
+          value={estado}
+        />
+  
+        <Button
+          icon="content-save"
+          mode="contained"
+          onPress={guardarAlquiler}
+        >
+          Guardar
+        </Button>
+        {errores !== '' && <Text style={{ color: 'red' }}>{errores}</Text>}
+  
+        <Text style={{ marginTop: 20 }}>Listar carros:</Text>
+        <Button
+          mode="outlined"
+          onPress={() => {
+            // listar los carros
+            // ...
+          }}
+        >
+          Listar
+        </Button>
+      </View>
+    );
+  }
+
+
+   function Usuario({ navigation, route }) {
+    const [username, setUsername] = useState('');
+    const [name, setName] = useState('');
+    const [password, setPassword] = useState('');
+    const [errores, setErrores] = useState('');
+  
+    const usuariosRegistrados = []; // lista de usuarios registrados
+  
+    const guardarUsuario = () => {
+      // Validar campos
+      if (!/^[a-zA-Z0-9]+$/.test(username)) {
+        setErrores('El nombre de usuario solo debe contener letras y números');
+        return;
+      }
+  
+      if (usuariosRegistrados.includes(username)) {
+        setErrores('El nombre de usuario ya existe');
+        return;
+      }
+  
+      if (!/^[a-zA-Z\s]+$/.test(name)) {
+        setErrores('El nombre solo debe contener letras y espacios');
+        return;
+      }
+  
+      if (!/^[a-zA-Z0-9]+$/.test(password)) {
+        setErrores('La contraseña solo debe contener letras y números');
+        return;
+      }
+  
+      // Guardar usuario
+      // ...
+  
+      setErrores(''); // limpiar errores si todo está bien
+    };
+  
+    return (
+      <View style={styles.container}>
+        <Text style={{ marginBottom: 20 }}>Registro de Usuario</Text>
+        <TextInput
+          style={{ marginBottom: 10 }}
+          label="Nombre de usuario"
+          mode="outlined"
+          left={<TextInput.Icon name="numeric" />}
+          onChangeText={setUsername}
+          keyboardType="numeric"
+          value={username}
+        />
+        <TextInput
+          style={{ marginBottom: 10 }}
+          label="Nombre usuario"
+          mode="outlined"
+          right={<TextInput.Icon name="account" />}
+          onChangeText={setName}
+          value={name}
+        />
+        <TextInput
+          style={{ marginBottom: 10 }}
+          label="Contraseña de usuario"
+          mode="outlined"
+          right={<TextInput.Icon name="car" />}
+          onChangeText={setPassword}
+          value={password}
+        />
+  
+        <Button
+          icon="content-save"
+          mode="contained"
+          onPress={guardarUsuario}
+        >
+          Guardar
+        </Button>
+        {errores !== '' && <Text style={{ color: 'red' }}>{errores}</Text>}
+  
+        <Text style={{ marginTop: 20 }}>Listar usuarios:</Text>
+        <Button
+          mode="outlined"
+          onPress={() => {
+            // listar los usuarios
+            // ...
+          }}
+        >
+          Listar
+        </Button>
+      </View>
+    );
   }
 
 function HomeTabs(){

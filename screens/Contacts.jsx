@@ -2,41 +2,40 @@
 // import { useState } from 'react';
 
 
+// export default function Car({ navigation, route }) {
+//   const [numeroPlaca, setNumeroPlaca] = useState('');
+//   const [marcaAuto, setMarcaAuto] = useState('');
+//   const [estado, setEstado] = useState('');
+  
 
-
-
-// export default function Usuario({ navigation, route }) {
-//   const [username , setuSername] = useState('');
-//   const [name , setName] = useState('');
-//   const [password , setaPassword] = useState('');
 
 //   return (
 //     <View style={styles.container}>
-//       <Text style={{ marginBottom: 20 }}>Registro de alquiler</Text>
+//       <Text style={{ marginBottom: 20 }}>Registro de Carro</Text>
 //       <TextInput
 //         style={{ marginBottom: 10 }}
-//         label="Nombre de usuario"
+//         label="Número de placa"
 //         mode="outlined"
 //         left={<TextInput.Icon name="numeric" />}
-//         onChangeText={setuSername}
+//         onChangeText={setNumeroPlaca}
 //         keyboardType="numeric"
-//         value={username}
+//         value={numeroPlaca}
 //       />
 //       <TextInput
 //         style={{ marginBottom: 10 }}
-//         label="Nombre usuario"
+//         label="Marca del auto"
 //         mode="outlined"
 //         right={<TextInput.Icon name="account" />}
-//         onChangeText={setName}
-//         value={name}
+//         onChangeText={setMarcaAuto}
+//         value={marcaAuto}
 //       />
 //       <TextInput
 //         style={{ marginBottom: 10 }}
-//         label="Contraseña de usuario"
+//         label="Estado del auto"
 //         mode="outlined"
 //         right={<TextInput.Icon name="car" />}
-//         onChangeText={setaPassword}
-//         value={password}
+//         onChangeText={setEstado}
+//         value={estado}
 //       />
 
 //       <Button
@@ -70,3 +69,6 @@
 //         justifyContent:'center'
 //     },
 // })
+
+
+
