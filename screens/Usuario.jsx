@@ -1,72 +1,134 @@
-// import { View, Text, TextInput, Button,StyleSheet} from 'react-native';
-// import { useState } from 'react';
+import { View } from 'react-native';
+
+import { Button, Text, TextInput } from 'react-native-paper';
+import { useForm, Controller } from "react-hook-form";
 
 
+import { styleAlert, styleInput, styles } from '../assets/css/styles';
+import { useState } from 'react';
+import { users } from '../App';
+
+export const Usuario = ({ navigation }) => {
+  const [ error, setError ] = useState('');
+
+  const { control, handleSubmit, reset, formState: { errors } } = useForm({
+    defaultValues: {
+      username: '',
+      name: '',
+      password: ''
+    }
+  });
+
+  const onSubmit = ({ username, password, name }) => {
+    const findUser = users.find(user => user.username === username && user.password === password);
+    if (findUser) {
+      setError(`El username ${username}, ya esta registrado`);
+    } else {
+      users.push({
+        username,
+        name,
+        password
+      });
+      console.log(users)
+      setError('')
+      reset();
+      navigation.navigate('Car');
+    }
+
+  }
+
+  return (
+    <View style={styles.container}>
+      {
+        error !== '' && <Text style={{ color: 'red', marginBottom: 20 }}>{error}</Text>
+      }
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+          pattern: /^[a-zA-Z\ áéíóúÁÉÍÓÚñÑ\s]*$/
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styleInput.widthInput}
+            onBlur={onBlur}
+            value={value}
+            onChangeText={onChange}
+            mode='outlined'
+            label="Name"
+            left={<TextInput.Icon icon='account-circle' />}
+          />
+        )}
+        name="name"
+      />
+      {errors.name?.type === 'required' && <Text style={styleAlert.alert}>El name es obligatorio</Text>}
+      {errors.name?.type === 'pattern' && <Text style={styleAlert.alert}>El name no permite caracteres especiasles</Text>}
+
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+          pattern: /^[a-zA-Z0-9\ áéíóúÁÉÍÓÚñÑ\s]*$/
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styleInput.widthInput}
+            onBlur={onBlur}
+            value={value}
+            onChangeText={onChange}
+            mode='outlined'
+            label="Usuario"
+            left={<TextInput.Icon icon='account' />}
+          />
+        )}
+        name="username"
+      />
+      {errors.username?.type === 'required' && <Text style={styleAlert.alert}>El username es obligatorio</Text>}
+      {errors.username?.type === 'pattern' && <Text style={styleAlert.alert}>El username no permite caracteres especiasles</Text>}
+
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+          pattern: /^[a-zA-Z0-9\ áéíóúÁÉÍÓÚñÑ\s]*$/
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styleInput.widthInput}
+            onBlur={onBlur}
+            value={value}
+            onChangeText={onChange}
+            secureTextEntry
+            mode='outlined'
+            label="Password"
+            left={<TextInput.Icon icon='lock' />}
+          />
+        )}
+        name="password"
+      />
+      {errors.password?.type === 'required' && <Text style={styleAlert.alert}>El password es obligatorio</Text>}
+      {errors.password?.type === 'pattern' && <Text style={styleAlert.alert}>El username no permite caracteres especiasles</Text>}
+
+      <View
+        style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 20, margin: 20, justifyContent: 'space-evenly', width: '80%' }}
+      >
+        <Button
+          icon="content-save" mode="contained"
+          buttonColor='#2b78fd'
+          onPress={handleSubmit(onSubmit)}
+        >
+          Registrar
+        </Button>
+        <Button
+          buttonColor='#dc3545'
+          icon="keyboard-return" mode="contained"
+          onPress={() => navigation.navigate('Logout')}
+        >
+          Volver
+        </Button>
+      </View>
 
 
-
-// export default function Usuario({ navigation, route }) {
-//   const [username , setuSername] = useState('');
-//   const [name , setName] = useState('');
-//   const [password , setaPassword] = useState('');
-
-//   return (
-//     <View style={styles.container}>
-//       <Text style={{ marginBottom: 20 }}>Registro de alquiler</Text>
-//       <TextInput
-//         style={{ marginBottom: 10 }}
-//         label="Nombre de usuario"
-//         mode="outlined"
-//         left={<TextInput.Icon name="numeric" />}
-//         onChangeText={setuSername}
-//         keyboardType="numeric"
-//         value={username}
-//       />
-//       <TextInput
-//         style={{ marginBottom: 10 }}
-//         label="Nombre usuario"
-//         mode="outlined"
-//         right={<TextInput.Icon name="account" />}
-//         onChangeText={setName}
-//         value={name}
-//       />
-//       <TextInput
-//         style={{ marginBottom: 10 }}
-//         label="Contraseña de usuario"
-//         mode="outlined"
-//         right={<TextInput.Icon name="car" />}
-//         onChangeText={setaPassword}
-//         value={password}
-//       />
-
-//       <Button
-//         icon="content-save"
-//         mode="contained"
-//         onPress={guardarAlquiler}
-//       >
-//         Guardar
-//       </Button>
-//       {errores !== '' && <Text style={{ color: 'red' }}>{errores}</Text>}
-
-//       <Text style={{ marginTop: 20 }}>Listar carros:</Text>
-//       <Button
-//         mode="outlined"
-//         onPress={() => {
-//           // listar los carros
-//           // ...
-//         }}
-//       >
-//         Listar
-//       </Button>
-//     </View>
-//   );
-  
-// }
-// export const styles = StyleSheet.create({
-//     container:{
-//         flex:1,
-//         backgroundColor:'#fff',
-//         alignItems:'center',
-//         justifyContent:'center'
-//     },
-// })
+    </View>
+  )
+}
